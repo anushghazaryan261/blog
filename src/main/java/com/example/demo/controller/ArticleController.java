@@ -3,8 +3,11 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Article;
 import com.example.demo.service.ArticleService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class ArticleController {
@@ -41,18 +44,14 @@ public class ArticleController {
     }
 
     @GetMapping(value = "/article/{id}")
-    public void findById(@PathVariable int id){
-        if (articleService.findArticleById(id)!=null) {
-            System.out.println("getting by id " + id);
-            System.out.println(articleService.findArticleById(id));
-        }else{
-            System.out.println("Something went wrong");
-        }
+    public ResponseEntity<Article> findById(@PathVariable int id){
+        Article article=articleService.findArticleById(id);
+        return ResponseEntity.ok(article);
     }
 
     @GetMapping(value = "/article")
-    public void findAll(){
-        System.out.println("All users");
-        articleService.findAll().forEach(System.out::println);
+    public ResponseEntity<List<Article>> findAll(){
+        List<Article> articles=articleService.findAll();
+        return ResponseEntity.ok(articles);
     }
 }

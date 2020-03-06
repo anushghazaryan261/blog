@@ -3,7 +3,10 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -44,18 +47,14 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/{id}")
-    public void findById(@PathVariable int id){
-        if (userService.getUserById(id)!=null) {
-            System.out.println("getting by id " + id);
-            System.out.println(userService.getUserById(id));
-        }else{
-            System.out.println("Something went wrong");
-        }
+    public ResponseEntity<User> findById(@PathVariable int id){
+        User user=userService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping(value = "/user")
-    public void findAll(){
-        System.out.println("All users");
-        userService.findAll().forEach(System.out::println);
+    public ResponseEntity<List<User>> findAll(){
+        List<User> users=userService.findAll();
+        return ResponseEntity.ok(users);
     }
 }
